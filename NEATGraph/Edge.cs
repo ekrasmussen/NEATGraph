@@ -12,6 +12,8 @@ namespace NEATGraph
         GraphNode Next { get; set; }
         GraphNode Previous { get; set; }
 
+        float Weight { get; set; }
+
         public Edge()
         {
             
@@ -19,7 +21,7 @@ namespace NEATGraph
 
         public float GetStrength()
         {
-            return Previous.Fire();
+            return Previous.Fire() * Weight;
         }
     }
 }
