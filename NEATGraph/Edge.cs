@@ -12,7 +12,7 @@ namespace NEATGraph
         public GraphNode? Next { get; set; }
         public GraphNode? Previous { get; set; }
 
-        float Weight { get; set; }
+        public float Weight { get; set; }
 
         public Edge()
         {

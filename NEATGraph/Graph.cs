@@ -36,14 +36,26 @@ namespace NEATGraph
             HiddenNodes++;
         }
 
-        public void CreateEdge(string inputname, string outputname)
+        public void CreateEdge(string inputname, string outputname, float weight)
         {
             Edge edge = new Edge();
             edge.Previous = Nodes.Find(n => n.Name == inputname);
             edge.Next = Nodes.Find(n => n.Name == outputname);
+            edge.Weight = weight;
 
             edge.Previous!.AddEdge(edge, EdgeType.OUTPUT);
             edge.Next!.AddEdge(edge, EdgeType.INPUT);
+        }
+
+        public void Update()
+        {
+            foreach(var node in Nodes)
+            {
+                if(node.GetType() == typeof(OutputNode))
+                {
+                    node.Fire();
+                }
+            }
         }
     }
 }
