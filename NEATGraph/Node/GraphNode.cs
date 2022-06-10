@@ -18,10 +18,17 @@ namespace NEATGraph.Node
             Output = new List<Edge>();
         }
 
-        //public virtual void AddEdge()
-        //{
-            
-        //}
+        public virtual void AddEdge(Edge edge, EdgeType type = EdgeType.INPUT)
+        {
+            if(type == EdgeType.INPUT)
+            {
+                Input.Add(edge);
+            }
+            else if(type == EdgeType.OUTPUT)
+            {
+                Output.Add(edge);
+            }
+        }
 
         public virtual float Fire()
         {
