@@ -10,10 +10,16 @@ namespace NEATGraph
     internal class Edge
     {
         GraphNode Next { get; set; }
+        GraphNode Previous { get; set; }
 
-        public Edge(GraphNode next)
+        public Edge()
         {
-            Next = next;
+            
+        }
+
+        public float GetStrength()
+        {
+            return Previous.Fire();
         }
     }
 }
