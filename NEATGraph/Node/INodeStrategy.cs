@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NEATGraph
+namespace NEATGraph.Node
 {
-    public enum EdgeType
+    public interface INodeStrategy
     {
-        INPUT,
-        HIDDEN,
-        OUTPUT
+        public float Calculate(float input);
     }
 }

@@ -8,7 +8,7 @@ namespace NEATGraph.Node
 {
     internal class InputNode : GraphNode
     {
-        INodeInput? input;
+        public INodeInput? InputAction { get; set; }
         public InputNode(string? name) : base(name)
         {
 
@@ -21,12 +21,11 @@ namespace NEATGraph.Node
 
         public override float Fire()
         {
-            if(input == null)
+            if(InputAction == null)
             {
                 return 0;
             }
-
-            return input.ReadInput();
+            return InputAction.ReadInput();
         }
     }
 }

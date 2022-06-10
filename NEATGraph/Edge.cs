@@ -7,10 +7,10 @@ using NEATGraph.Node;
 
 namespace NEATGraph
 {
-    internal class Edge
+    public class Edge
     {
-        GraphNode Next { get; set; }
-        GraphNode Previous { get; set; }
+        public GraphNode? Next { get; set; }
+        public GraphNode? Previous { get; set; }
 
         float Weight { get; set; }
 
@@ -26,6 +26,11 @@ namespace NEATGraph
 
         public float GetStrength()
         {
+            if(Previous == null)
+            {
+                return 0;
+            }
+
             return Previous.Fire() * Weight;
         }
     }

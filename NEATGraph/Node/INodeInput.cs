@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace NEATGraph.Node
 {
-    internal interface INodeInput
+    public interface INodeInput
     {
+        //Should give a float between 0 and 1, remember to normalize input
         public float ReadInput();
     }
 }
