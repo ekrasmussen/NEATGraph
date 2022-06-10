@@ -19,6 +19,11 @@ namespace NEATGraph
             
         }
 
+        public Edge(float weight)
+        {
+            Weight = weight;
+        }
+
         public float GetStrength()
         {
             return Previous.Fire() * Weight;
