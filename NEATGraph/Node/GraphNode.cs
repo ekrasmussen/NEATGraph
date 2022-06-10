@@ -8,10 +8,12 @@ namespace NEATGraph.Node
 {
     internal abstract class GraphNode
     {
+        public string Name { get; set; }
         public List<Edge> Input { get; set; }
         public List<Edge> Output { get; set; }
-        public GraphNode()
+        public GraphNode(string name)
         {
+            Name = name;
             Input = new List<Edge>();
             Output = new List<Edge>();
         }
