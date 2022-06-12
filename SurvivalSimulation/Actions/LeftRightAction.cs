@@ -17,11 +17,15 @@ namespace SurvivalSimulation.Actions
 
         public void Fire(float input)
         {
-            if(input < 0.5f)
+            if(input == 0)
+            {
+                return;
+            }
+            else if(input < 0.5f)
             {
                 Player.MoveLeft();
             }
-            else
+            else if(input >= 0.5f)
             {
                 Player.MoveRight();
             }

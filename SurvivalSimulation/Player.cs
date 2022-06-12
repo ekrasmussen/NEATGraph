@@ -1,5 +1,6 @@
 ﻿using NEATGraph;
 using NEATGraph.Node;
+using SurvivalSimulation.Actions;
 using SurvivalSimulation.PlayerAttributes;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,9 @@ namespace SurvivalSimulation
             Brain.CreateInputNode(new Xposition(this));
             Brain.CreateInputNode(new YPosition(this));
             Brain.CreateInputNode(new TicksRemaining(this));
+
+            Brain.CreateOutputNode(new UpDownAction(this));
+            Brain.CreateOutputNode(new LeftRightAction(this));
         }
 
         public Player(World world, float brainChance, float attributeChance, Graph graph)
@@ -48,6 +52,10 @@ namespace SurvivalSimulation
             inputNodes[0].InputAction = new Xposition(this);
             inputNodes[1].InputAction = new YPosition(this);
             inputNodes[2].InputAction = new TicksRemaining(this);
+
+            List<OutputNode> outputNodes = Brain.OutputNodes;
+            outputNodes[0].Action = new UpDownAction(this);
+            outputNodes[1].Action = new LeftRightAction(this);
 
         }
 
@@ -72,25 +80,108 @@ namespace SurvivalSimulation
             Xpos = TrueXpos / World.WorldXSize;
             Ypos = TrueYpos / World.WorldYSize;
             TicksLeft = TrueTicksLeft / World.TicksLeft;
+
+            Brain.Update();
         }
 
         public void MoveLeft()
         {
-            TrueXpos--;
+            bool isBlocked = false;
+
+            if (TrueXpos - 1 < 0)
+            {
+                isBlocked = true;
+            }
+            else
+            {
+                for (int i = 0; i < World.Players.Count; i++)
+                {
+                    if (World.Players[i].TrueXpos == TrueXpos - 1 && World.Players[i].TrueYpos == TrueYpos)
+                    {
+                        isBlocked = true;
+                    }
+                }
+            }
+
+            if (!isBlocked)
+            {
+                TrueXpos--;
+            }
+
         }
 
         public void MoveRight()
         {
-            TrueXpos++;
+            bool isBlocked = false;
+
+            if (TrueXpos + 1 > World.WorldXSize)
+            {
+                isBlocked = true;
+            }
+            else
+            {
+                for (int i = 0; i < World.Players.Count; i++)
+                {
+                    if (World.Players[i].TrueXpos == TrueXpos + 1 && World.Players[i].TrueYpos == TrueYpos)
+                    {
+                        isBlocked = true;
+                    }
+                }
+            }
+
+            if (!isBlocked)
+            {
+                TrueXpos++;
+            }
         }
 
         public void MoveUp()
         {
-            TrueYpos++;
+            bool isBlocked = false;
+
+            if (TrueYpos + 1 > World.WorldYSize)
+            {
+                isBlocked = true;
+            }
+            else
+            {
+                for (int i = 0; i < World.Players.Count; i++)
+                {
+                    if (World.Players[i].TrueXpos == TrueXpos && World.Players[i].TrueYpos == TrueYpos + 1)
+                    {
+                        isBlocked = true;
+                    }
+                }
+            }
+
+            if (!isBlocked)
+            {
+                TrueXpos++;
+            }
         }
         public void MoveDown()
         {
-            TrueYpos--;
+            bool isBlocked = false;
+
+            if (TrueYpos - 1 < 0)
+            {
+                isBlocked = true;
+            }
+            else
+            {
+                for (int i = 0; i < World.Players.Count; i++)
+                {
+                    if (World.Players[i].TrueXpos == TrueXpos && World.Players[i].TrueYpos == TrueYpos - 1)
+                    {
+                        isBlocked = true;
+                    }
+                }
+            }
+
+            if (!isBlocked)
+            {
+                TrueXpos--;
+            }
         }
     }
 }
