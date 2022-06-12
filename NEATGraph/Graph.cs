@@ -10,6 +10,7 @@ namespace NEATGraph
         public Graph()
         {
             Nodes = new List<GraphNode>();
+            Factory = new NodeFactory();
         }
 
         public void CreateInputNode(INodeInput inputAction) => Nodes.Add(Factory.CreateInputNode(inputAction));
