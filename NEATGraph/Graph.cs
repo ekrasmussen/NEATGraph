@@ -33,8 +33,11 @@ namespace NEATGraph
         public void CreateEdge(GraphNode inputNode, GraphNode outputNode, float weight)
         {
             Edge edge = new Edge(inputNode, outputNode, weight);
-            edge.Previous!.AddEdge(edge, EdgeType.OUTPUT);
-            edge.Next!.AddEdge(edge, EdgeType.INPUT);
+            if (VerifyEdge(edge.Previous!, edge.Next!))
+            {
+                edge.Previous!.AddEdge(edge, EdgeType.OUTPUT);
+                edge.Next!.AddEdge(edge, EdgeType.INPUT);
+            }
         }
 
         private bool VerifyEdge(GraphNode input, GraphNode output)
