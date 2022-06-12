@@ -23,9 +23,11 @@ namespace NEATGraph
             edge.Previous = Nodes.Find(n => n.Name == inputname);
             edge.Next = Nodes.Find(n => n.Name == outputname);
             edge.Weight = weight;
-
-            edge.Previous!.AddEdge(edge, EdgeType.OUTPUT);
-            edge.Next!.AddEdge(edge, EdgeType.INPUT);
+            if(VerifyEdge(edge.Previous!, edge.Next!))
+            {
+                edge.Previous!.AddEdge(edge, EdgeType.OUTPUT);
+                edge.Next!.AddEdge(edge, EdgeType.INPUT);
+            }
         }
 
         public void CreateEdge(GraphNode inputNode, GraphNode outputNode, float weight)
@@ -34,6 +36,20 @@ namespace NEATGraph
             edge.Previous!.AddEdge(edge, EdgeType.OUTPUT);
             edge.Next!.AddEdge(edge, EdgeType.INPUT);
         }
+
+        private bool VerifyEdge(GraphNode input, GraphNode output)
+        {
+            foreach(Edge edge in input.Output)
+            {
+                if(edge.Next == output)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public void Update()
         {
             foreach(var node in Nodes)
