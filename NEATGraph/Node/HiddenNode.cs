@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NEATGraph.ActivationFunctions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace NEATGraph.Node
 {
     public class HiddenNode : GraphNode
     {
-        public IActivationFunction ActivationFunction { get; set; }
+        public IActivationFunction ActivationFunction { get; set; } = new LinearActivation();
         public HiddenNode(string name) : base(name)
         {
 
@@ -22,8 +23,7 @@ namespace NEATGraph.Node
                 total += edge.GetStrength();
             }
 
-            
-            return total;
+            return ActivationFunction.Calculate(total);
         }
     }
 }
