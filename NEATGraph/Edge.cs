@@ -11,6 +11,7 @@ namespace NEATGraph
     {
         public GraphNode? Next { get; set; }
         public GraphNode? Previous { get; set; }
+        public bool IsEnabled { get; set; } = true;
 
         public float Weight { get; set; }
 

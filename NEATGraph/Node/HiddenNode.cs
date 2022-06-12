@@ -20,7 +20,10 @@ namespace NEATGraph.Node
             float total = 0;
             foreach (var edge in Input)
             {
-                total += edge.GetStrength();
+                if(edge.IsEnabled)
+                {
+                    total += edge.GetStrength();
+                }
             }
 
             return ActivationFunction.Calculate(total);

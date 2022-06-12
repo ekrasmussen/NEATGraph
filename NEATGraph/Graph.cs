@@ -106,29 +106,93 @@ namespace NEATGraph
 
         public void Mutate()
         {
-            throw new NotImplementedException();
+            Random rnd = new Random();
+            int result = rnd.Next(0, 4);
+
+            switch(result)
+            {
+                case 0:
+                    MutateCreateNode();
+                    break;
+                case 1:
+                    MutateActivationFunction();
+                    break;
+                case 2:
+                    MutateEdgeWeight();
+                    break;
+
+                case 3:
+                    MutateEdgeToHiddenNode();
+                    break;
+
+                    default:
+                    break;
+            }
         }
 
-        public void MutateCreateNode()
+        private void MutateCreateNode()
         {
             Random rnd = new Random();
             HiddenNode node = (HiddenNode)Factory.CreateHiddenNode();
             node.ActivationFunction = ActivationFunctionFactory.CreateRandom();
             GraphNode connectionNode = GetRandomNode(false, true);
             float weight = (float)(rnd.NextDouble() * (5 - -5) + -5);
-
+            HiddenNodes.Add(node);
             Console.WriteLine($"Node created, edge between {node.Name} and {connectionNode.Name}. Weight : {weight}");
             CreateEdge(node, connectionNode, weight);
         }
 
         private void MutateActivationFunction()
         {
-            throw new NotImplementedException();
+            HiddenNode node = (HiddenNode)GetRandomNode(false, false);
+            node.ActivationFunction = ActivationFunctionFactory.CreateRandom();
+            Console.WriteLine($"Mutated {node.Name} to be the {node.ActivationFunction.Name} Activation Function");
         }
 
         private void MutateEdgeWeight()
         {
-            throw new NotImplementedException();
+            Random rnd = new Random();
+            int result = rnd.Next(Edges.Count);
+
+            Edge edge = Edges[result];
+            edge.Weight = (float)(rnd.NextDouble() * (5 - -5) + -5);
+            Console.WriteLine($"Mutated Edge between {edge.Previous.Name} to {edge.Next.Name} with weight {edge.Weight}");
+        }
+
+        private void MutateEdgeToHiddenNode()
+        {
+            Random rnd = new Random(Edges.Count);
+            int result = rnd.Next(Edges.Count);
+
+            Edge unbrokenEdge = Edges[result];
+            Edges.RemoveAt(result);
+            HiddenNode node = (HiddenNode)Factory.CreateHiddenNode();
+            node.ActivationFunction = ActivationFunctionFactory.CreateRandom();
+            Edge edge1 = new Edge();
+            Edge edge2 = new Edge();
+
+            edge1.Previous = unbrokenEdge.Previous;
+            edge1.Next = node;
+            edge1.Weight = unbrokenEdge.Weight;
+
+            edge2.Previous = node;
+            edge2.Next = unbrokenEdge.Next;
+            edge2.Weight = 1f;
+
+            //add the edges to the nodes
+            unbrokenEdge.Previous!.AddEdge(edge1, EdgeType.OUTPUT);
+            unbrokenEdge.Previous.Output.Remove(unbrokenEdge);
+
+            unbrokenEdge.Next!.AddEdge(edge2, EdgeType.INPUT);
+            unbrokenEdge.Next.Input.Remove(unbrokenEdge);
+
+
+            node.AddEdge(edge1, EdgeType.INPUT);
+            node.AddEdge(edge2, EdgeType.OUTPUT);
+
+            HiddenNodes.Add(node);
+
+            Console.WriteLine($"Removed edge between {unbrokenEdge.Previous.Name} and {unbrokenEdge.Next.Name}, and added new hidden node");
         }
 
         private GraphNode GetRandomNode(bool includeOutput, bool includeInput)

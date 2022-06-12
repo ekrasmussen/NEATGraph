@@ -15,11 +15,12 @@ graph.CreateOutputNode(action);
 graph.CreateHiddenNode();
 graph.CreateEdge("I0", "H0", 1);
 graph.CreateEdge("H0", "O0", 1);
-
-graph.MutateCreateNode();
-graph.MutateCreateNode();
-graph.MutateCreateNode();
-
-//Console.WriteLine(graph.TotalEdges);
+graph.Mutate();
+graph.Mutate();
+graph.Mutate();
+graph.Mutate();
+graph.Mutate();
+graph.Mutate();
+graph.Mutate();
 
 //graph.Update();
