@@ -13,6 +13,8 @@ namespace SurvivalSimulation
     public class Player
     {
         public World World { get; set; }
+
+        //Attributes
         public float BrainMutationChance { get; set; }
         public float AttributeMutationChance { get; set; }
 
@@ -73,7 +75,21 @@ namespace SurvivalSimulation
         }
         private void MutateAttribute()
         {
+            Random rnd = new Random();
 
+            int result = rnd.Next(0, 2);
+
+            switch(result)
+            {
+                case 0:
+                    BrainMutationChance = (float)rnd.NextDouble();
+                    break;
+                case 1:
+                    AttributeMutationChance = (float)rnd.NextDouble();
+                    break;
+                default:
+                    break;
+            }
         }
         public void Step()
         {
