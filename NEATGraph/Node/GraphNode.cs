@@ -33,12 +33,12 @@ namespace NEATGraph.Node
         public virtual float Fire()
         {
             float total = 0;
-            
-            foreach(var edge in Input)
+
+            foreach (var edge in Input)
             {
                 total += edge.GetStrength();
             }
-            
+
             //Do math operation
 
             return total;

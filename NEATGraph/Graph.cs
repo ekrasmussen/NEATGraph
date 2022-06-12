@@ -47,6 +47,12 @@ namespace NEATGraph
             edge.Next!.AddEdge(edge, EdgeType.INPUT);
         }
 
+        public void CreateEdge(GraphNode inputNode, GraphNode outputNode, float weight)
+        {
+            Edge edge = new Edge(inputNode, outputNode, weight);
+            edge.Previous!.AddEdge(edge, EdgeType.OUTPUT);
+            edge.Next!.AddEdge(edge, EdgeType.INPUT);
+        }
         public void Update()
         {
             foreach(var node in Nodes)

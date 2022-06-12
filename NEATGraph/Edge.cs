@@ -24,6 +24,13 @@ namespace NEATGraph
             Weight = weight;
         }
 
+        public Edge(GraphNode inputNode, GraphNode outputNode, float weight)
+        {
+            Weight = weight;
+            Previous = inputNode;
+            Next = outputNode;
+        }
+
         public float GetStrength()
         {
             if(Previous == null)
