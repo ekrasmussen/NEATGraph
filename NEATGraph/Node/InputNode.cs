@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NEATGraph.Node
 {
-    internal class InputNode : GraphNode
+    public class InputNode : GraphNode
     {
         public INodeInput? InputAction { get; set; }
         public InputNode(string? name) : base(name)
