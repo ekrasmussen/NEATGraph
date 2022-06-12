@@ -32,6 +32,9 @@ namespace SurvivalSimulation
             BrainMutationChance = (float)random.NextDouble();
             AttributeMutationChance = (float)random.NextDouble();
             Brain = new Graph();
+            Brain.CreateInputNode(new Xposition(this));
+            Brain.CreateInputNode(new YPosition(this));
+            Brain.CreateInputNode(new TicksRemaining(this));
         }
 
         public Player(World world, float brainChance, float attributeChance, Graph graph)
@@ -41,7 +44,7 @@ namespace SurvivalSimulation
             AttributeMutationChance = attributeChance;
             Brain = graph;
 
-            List<InputNode> inputNodes = graph.InputNodes;
+            List<InputNode> inputNodes = Brain.InputNodes;
             inputNodes[0].InputAction = new Xposition(this);
             inputNodes[1].InputAction = new YPosition(this);
             inputNodes[2].InputAction = new TicksRemaining(this);
@@ -69,8 +72,25 @@ namespace SurvivalSimulation
             Xpos = TrueXpos / World.WorldXSize;
             Ypos = TrueYpos / World.WorldYSize;
             TicksLeft = TrueTicksLeft / World.TicksLeft;
+        }
 
+        public void MoveLeft()
+        {
+            TrueXpos--;
+        }
 
+        public void MoveRight()
+        {
+            TrueXpos++;
+        }
+
+        public void MoveUp()
+        {
+            TrueYpos++;
+        }
+        public void MoveDown()
+        {
+            TrueYpos--;
         }
     }
 }
