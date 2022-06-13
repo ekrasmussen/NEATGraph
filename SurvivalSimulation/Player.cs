@@ -61,6 +61,12 @@ namespace SurvivalSimulation
 
         }
 
+        public void setPosition(int x, int y)
+        {
+            TrueXpos = x;
+            TrueYpos = y;
+        }
+
         public void EndGeneration()
         {
             Random rnd = new Random();
