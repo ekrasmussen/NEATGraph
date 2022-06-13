@@ -58,6 +58,11 @@ namespace SurvivalSimulation
                     int x = rnd.Next(WorldXSize);
                     int y = rnd.Next(WorldYSize);
 
+                    if(positionedPlayers.Count == 0)
+                    {
+                        isBlocked = false;
+                    }
+
                     foreach (Player positionedPlayer in positionedPlayers)
                     {
                         if (positionedPlayer.TrueXpos == x && positionedPlayer.TrueYpos == y)
@@ -81,6 +86,7 @@ namespace SurvivalSimulation
 
         public void Play()
         {
+            SpawnPlayers();
             CurrentGeneration = 0;
             TicksLeft = NumberOfSteps;
             for(int i = 0; i < NumberOfGenerations; i++)
@@ -102,7 +108,6 @@ namespace SurvivalSimulation
                 }
                 TicksLeft--;
                 Console.WriteLine($"Generation {CurrentGeneration} - Step {NumberOfSteps - TicksLeft}");
-                Thread.Sleep(25);
             }
 
             KillUnfit();
@@ -125,14 +130,12 @@ namespace SurvivalSimulation
         private void KillUnfit()
         {
             //Set conditions for killing the unfit
-            foreach(Player player in Players)
+            for(int i= 0; i < Players.Count; i++)
             {
-                if(player.TrueXpos > SurviveBoxXMax || player.TrueXpos < SurviveBoxXMin)
+                if (Players[i].TrueXpos > SurviveBoxXMax || Players[i].TrueXpos < SurviveBoxXMin)
                 {
-                    if(player.TrueYpos > SurviveBoxYMax || player.TrueYpos < SurviveBoxYMin)
-                    {
-                        Players.Remove(player);
-                    }
+                    Players.RemoveAt(i);
+                    i--;
                 }
             }
         }

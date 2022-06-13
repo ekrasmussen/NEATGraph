@@ -93,6 +93,22 @@ namespace NEATGraph
             return true;
         }
 
+        public bool IsLoop(GraphNode target, GraphNode previous, int count)
+        {
+            if(previous.Input.Count == 0) return false;
+
+            foreach(Edge edge in previous.Input)
+            {
+                if(edge.Previous!.GetType() == typeof(HiddenNode))
+                {
+                    if (edge.Previous == target) return true;
+                    return IsLoop(target, edge.Previous, count);
+                }
+            }
+
+            return false;
+        }
+
         public void Update()
         {
             foreach(var node in Nodes)
@@ -107,7 +123,7 @@ namespace NEATGraph
         public void Mutate()
         {
             Random rnd = new Random();
-            int result = rnd.Next(0, 4);
+            int result = rnd.Next(0, 5);
 
             switch(result)
             {
@@ -123,6 +139,9 @@ namespace NEATGraph
 
                 case 3:
                     MutateEdgeToHiddenNode();
+                    break;
+                case 4:
+                    MutateCreateEdge();
                     break;
 
                     default:
@@ -145,8 +164,15 @@ namespace NEATGraph
         private void MutateActivationFunction()
         {
             HiddenNode node = (HiddenNode)GetRandomNode(false, false);
-            node.ActivationFunction = ActivationFunctionFactory.CreateRandom();
-            Console.WriteLine($"Mutated {node.Name} to be the {node.ActivationFunction.Name} Activation Function");
+            if(node != null)
+            {
+                node.ActivationFunction = ActivationFunctionFactory.CreateRandom();
+                Console.WriteLine($"Mutated {node.Name} to be the {node.ActivationFunction.Name} Activation Function");
+            }
+            else
+            {
+                MutateCreateNode();
+            }
         }
 
         private void MutateEdgeWeight()
@@ -154,15 +180,42 @@ namespace NEATGraph
             Random rnd = new Random();
             int result = rnd.Next(Edges.Count);
 
-            Edge edge = Edges[result];
-            edge.Weight = (float)(rnd.NextDouble() * (5 - -5) + -5);
-            Console.WriteLine($"Mutated Edge between {edge.Previous.Name} to {edge.Next.Name} with weight {edge.Weight}");
+            if(result > 0)
+            {
+                Edge edge = Edges[result];
+                edge.Weight = (float)(rnd.NextDouble() * (5 - -5) + -5);
+                Console.WriteLine($"Mutated Edge between {edge.Previous.Name} to {edge.Next.Name} with weight {edge.Weight}");
+            }
+
+            else
+            {
+                Mutate();
+            }
+        }
+
+        private void MutateCreateEdge()
+        {
+            //Get in
+            GraphNode inputNode = GetRandomNode(false, true);
+
+            //Get out
+            GraphNode outputNode = GetRandomNode(true, false);
+
+            Random rnd = new Random();
+            float weight = (float)(rnd.NextDouble() * (5 - -5) + -5);
+
+            CreateEdge(inputNode, outputNode, weight);
         }
 
         private void MutateEdgeToHiddenNode()
         {
             Random rnd = new Random(Edges.Count);
             int result = rnd.Next(Edges.Count);
+
+            if(result == 0)
+            {
+                MutateCreateEdge();
+            }
 
             Edge unbrokenEdge = Edges[result];
             Edges.RemoveAt(result);
@@ -207,11 +260,16 @@ namespace NEATGraph
             {
                 nodes.AddRange(InputNodes);
             }
+            if(nodes.Count > 0)
+            {
+                Random rnd = new Random();
+                int result = rnd.Next(nodes.Count);
+                return nodes[result];
+            }
 
-            Random rnd = new Random();
-            int result = rnd.Next(nodes.Count);
+            return null;
 
-            return nodes[result];
+            
         }
     }
 }
